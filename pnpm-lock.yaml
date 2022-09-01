@@ -2,11 +2,15 @@ lockfileVersion: 5.4
 
 specifiers:
   '@astrojs/solid-js': ^1.1.0
+  '@nanostores/solid': ^0.2.0
   astro: ^1.1.3
+  nanostores: ^0.6.0
   solid-js: ^1.4.3
 
 dependencies:
+  '@nanostores/solid': 0.2.0_wyl3xf5ounpvttfhodgihh3q4m
   astro: 1.1.3
+  nanostores: 0.6.0
 
 devDependencies:
   '@astrojs/solid-js': 1.1.0_solid-js@1.5.3
@@ -433,6 +437,16 @@ packages:
 
   /@ljharb/has-package-exports-patterns/0.0.2:
     resolution: {integrity: sha512-4/RWEeXDO6bocPONheFe6gX/oQdP/bEpv0oL4HqjPP5DCenBSt0mHgahppY49N0CpsaqffdwPq+TlX9CYOq2Dw==}
+    dev: false
+
+  /@nanostores/solid/0.2.0_wyl3xf5ounpvttfhodgihh3q4m:
+    resolution: {integrity: sha512-JhL/leayenkwJkz1gMwgN4v1SHmYmBcZP6podWSOMTsFR+OEfjcqNWqA5amEapN+ouaP1aov7Kr7XsdRgPVnjA==}
+    peerDependencies:
+      nanostores: ^0.6.0
+      solid-js: '>=1.4.0'
+    dependencies:
+      nanostores: 0.6.0
+      solid-js: 1.5.3
     dev: false
 
   /@nodelib/fs.scandir/2.1.5:
@@ -901,7 +915,6 @@ packages:
 
   /csstype/3.1.0:
     resolution: {integrity: sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==}
-    dev: true
 
   /data-uri-to-buffer/4.0.0:
     resolution: {integrity: sha512-Vr3mLBA8qWmcuschSLAOogKgQ/Jwxulv3RNE4FXnYWRGujzrRWQI4m12fQqRkwX06C0KanhLr4hK+GydchZsaA==}
@@ -2232,6 +2245,11 @@ packages:
     hasBin: true
     dev: false
 
+  /nanostores/0.6.0:
+    resolution: {integrity: sha512-CQpKE8wtaJAr66hbg32t0MOAeybzLywU6UsLAX18kyQL/bME+xwhjWpmrvJRBp5kueFy6hs2oHlt3HFpNP+JaA==}
+    engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
+    dev: false
+
   /nlcst-to-string/2.0.4:
     resolution: {integrity: sha512-3x3jwTd6UPG7vi5k4GEzvxJ5rDA7hVUIRNHPblKuMVP9Z3xmlsd9cgLcpAMkc5uPOBna82EeshROFhsPkbnTZg==}
     dev: false
@@ -2739,7 +2757,6 @@ packages:
     resolution: {integrity: sha512-F6LCJie+ZiGfvbHsqJ0UwDiSYN+2rR5CUGK7siU2fGptCDalMKL4mZVumQlwfq+wBSWlMt1BoB/OcjnYkDzBhg==}
     dependencies:
       csstype: 3.1.0
-    dev: true
 
   /source-map-js/1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
