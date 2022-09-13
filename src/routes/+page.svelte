@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/Button.svelte';
+	import Chat from '$lib/Chat.svelte';
 
 	let rating = 1500;
 
@@ -37,6 +38,10 @@
 		</div>
 	</div>
 </div>
+
+<aside>
+	<Chat />
+</aside>
 
 <style>
 	#center-lr {
@@ -93,5 +98,28 @@
 		flex-direction: row;
 		justify-content: center;
 		gap: var(--size-xl);
+	}
+
+	aside {
+		visibility: hidden;
+
+		position: absolute;
+		right: var(--size-m);
+		bottom: var(--size-m);
+		overflow: hidden;
+
+		width: 25vw;
+		height: 35vh;
+		background-color: var(--color-secondary);
+		color: var(--color-primary);
+		outline: var(--outline-primary);
+		box-shadow: var(--shadow-primary-xs);
+		display: block;
+	}
+
+	@media only screen and (min-width: 500px) and (min-height: 300px) {
+		aside {
+			visibility: visible;
+		}
 	}
 </style>

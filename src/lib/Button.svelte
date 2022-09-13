@@ -13,6 +13,7 @@
 		transition: all 0.1s ease 0s;
 		text-align: center;
 		text-decoration: none;
+		box-sizing: border-box;
 	}
 
 	button:hover {
