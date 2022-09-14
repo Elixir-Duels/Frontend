@@ -106,7 +106,7 @@
 			{/each}
 		</ul>
 		<form id="bottom" on:submit|preventDefault={send_message}>
-			<input bind:this={message_input} type="text" placeholder="placeholder" />
+			<input bind:this={message_input} type="text" placeholder="message" />
 			<button type="submit">Send</button>
 		</form>
 	{/if}
