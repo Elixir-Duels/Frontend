@@ -70,6 +70,8 @@
 			})
 	);
 
+	let user_count = derived(global_presence_list, (l) => l?.size ?? 0);
+
 	let message_input: any;
 
 	function send_message() {
@@ -88,12 +90,16 @@
 </script>
 
 <div>
-	<h4 id="top">Global Chat</h4>
 	{#if !$is_connected}
 		<div id="center">
+			<h4 id="top">Global Chat</h4>
 			<Spinner />
 		</div>
 	{:else}
+		<div id="top">
+			<h4>Global Chat</h4>
+			<h6>{$user_count} online</h6>
+		</div>
 		<ul id="center" bind:this={message_list}>
 			{#each $formatted_messages as message (message.id)}
 				<li>{message.formatted}</li>
@@ -119,10 +125,16 @@
 	}
 
 	#top {
+		gap: 0;
 		flex-grow: 0;
+		height: min-content;
 		text-align: center;
 		margin: var(--size-xs);
 		justify-self: flex-start;
+	}
+
+	#top > * {
+		margin: 0;
 	}
 
 	#center {
