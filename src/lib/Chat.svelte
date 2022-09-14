@@ -25,7 +25,7 @@
 
 			global_chat
 				.join()
-				.receive('ok', ({ messages }) => console.log(messages))
+				.receive('ok', ({ messages }) => console.log("received: " + messages))
 				.receive('timeout', () => console.log('timeout'))
 				.receive('error', ({ reason }) => console.log('failed to connect %s', reason));
 		},

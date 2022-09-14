@@ -1,19 +1,14 @@
 import { Socket } from 'phoenix';
 import { derived, writable, type Readable } from 'svelte/store';
 import { token } from './auth';
-import { api, browser } from './utils';
+import { api } from './utils';
 
-export const socket: Readable<Socket | undefined> = derived(
-	[token, browser],
-	([token, browser]) => {
-		if (!token) return undefined;
-		if (!browser) return undefined;
-		console.log('recreating socket with token ' + token);
-		const socket = new Socket('wss://' + api + '/socket', { params: { token } });
-		socket.connect();
-		return socket;
-	}
-);
+export const socket: Readable<Socket | undefined> = derived(token, (token) => {
+	if (!token) return undefined;
+	const socket = new Socket('wss://' + api + '/socket', { params: { token } });
+	socket.connect();
+	return socket;
+});
 
 export const is_connected = writable(false);
 
