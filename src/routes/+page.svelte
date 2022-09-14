@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { login, signup, logged_in } from '$lib/auth';
 	import Button from '$lib/Button.svelte';
 	import Chat from '$lib/Chat.svelte';
 
@@ -11,6 +12,9 @@
 	function open_settings() {}
 
 	function open_about() {}
+
+	let username: string;
+	let password: string;
 </script>
 
 <div id="center-lr">
@@ -20,20 +24,33 @@
 				<h1>Elixir Duels</h1>
 			</header>
 			<main>
-				<div class="group">
-					<Button on:click|once={start_matchmaking}>
-						<h4>Play</h4>
-						<h5>Current Rating: {rating}</h5>
-					</Button>
-				</div>
-				<div class="group">
-					<Button on:click={open_settings}>
-						<h4>Settings</h4>
-					</Button>
-					<Button on:click={open_about}>
-						<h4>About</h4>
-					</Button>
-				</div>
+				{#if $logged_in}
+					<div class="group">
+						<Button on:click|once={start_matchmaking}>
+							<h4>Play</h4>
+							<h5>Current Rating: {rating}</h5>
+						</Button>
+					</div>
+					<div class="group">
+						<Button on:click={open_settings}>
+							<h4>Settings</h4>
+						</Button>
+						<Button on:click={open_about}>
+							<h4>About</h4>
+						</Button>
+					</div>
+				{:else}
+					<div class="group">
+						<input bind:value={username} type="text" placeholder="username" />
+					</div>
+					<div class="group">
+						<input bind:value={password} type="password" placeholder="password" />
+					</div>
+					<div class="group">
+						<Button on:click|once={() => signup(username, password)}><h4>Register</h4></Button>
+						<Button on:click|once={() => login(username, password)}><h4>Sign In</h4></Button>
+					</div>
+				{/if}
 			</main>
 		</div>
 	</div>
@@ -98,6 +115,14 @@
 		flex-direction: row;
 		justify-content: center;
 		gap: var(--size-xl);
+	}
+
+	.group > input {
+		background-color: var(--color-secondary);
+		color: var(--color-primary);
+		outline: var(--outline-primary);
+		box-shadow: var(--shadow-primary-xs);
+		font-size: xx-large;
 	}
 
 	aside {

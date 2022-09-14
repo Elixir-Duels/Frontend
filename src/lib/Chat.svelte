@@ -2,8 +2,8 @@
 	import { socket } from '$lib/socket';
 	import { derived, writable, type Writable } from 'svelte/store';
 	import type { Socket, Channel } from 'phoenix';
-	import { browser } from '$app/environment';
 	import { afterUpdate } from 'svelte';
+	import { browser } from '$app/environment';
 
 	type Message = { id: string; author: string; content: string };
 
@@ -61,7 +61,7 @@
 		{/each}
 	</ul>
 	<form on:submit|preventDefault={send_message}>
-		<input bind:this={message_input} type="text" />
+		<input bind:this={message_input} type="text" placeholder="placeholder" />
 		<button type="submit">Send</button>
 	</form>
 </div>
