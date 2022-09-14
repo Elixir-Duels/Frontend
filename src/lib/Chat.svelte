@@ -5,12 +5,33 @@
 	import { afterUpdate } from 'svelte';
 	import { browser } from '$app/environment';
 	import Spinner from './Spinner.svelte';
+	import { Presence } from 'phoenix';
 
 	type Message = { id: string; author: string; content: string };
 
 	let push_message: (message: string) => void;
 
 	let global_chat = derived(socket, (socket: Socket | undefined) => socket?.channel('chat:global'));
+	let global_presence = derived(global_chat, (global_chat) =>
+		global_chat ? new Presence(global_chat) : undefined
+	);
+	let global_presence_list: Writable<
+		Map<string, { meta: never /* todo: type properly */; user: { username: string } }> | undefined
+	> = writable(undefined);
+	const update_presence_list = (global_presence: Presence) => {
+		let new_list = new Map();
+		global_presence.list((key, presence) => {
+			new_list.set(key, presence);
+		});
+		global_presence_list.set(new_list);
+	};
+	global_presence.subscribe((global_presence) => {
+		if (global_presence) {
+			global_presence.onSync(() => update_presence_list(global_presence));
+			update_presence_list(global_presence);
+		}
+	});
+
 	let message_store: Writable<Message[]> = writable([]);
 
 	global_chat.subscribe(
@@ -35,6 +56,18 @@
 				c.leave();
 			}
 		}
+	);
+
+	let formatted_messages = derived(
+		[message_store, global_presence_list],
+		([message_store, global_presence_list]) =>
+			message_store.map((message) => {
+				const presence_info = global_presence_list?.get(message.author);
+				return {
+					id: message.id,
+					formatted: (presence_info?.user.username ?? '???') + ': ' + message.content
+				};
+			})
 	);
 
 	let message_input: any;
@@ -62,8 +95,8 @@
 		</div>
 	{:else}
 		<ul id="center" bind:this={message_list}>
-			{#each $message_store as message (message.id)}
-				<li>{message.author}: {message.content}</li>
+			{#each $formatted_messages as message (message.id)}
+				<li>{message.formatted}</li>
 			{/each}
 		</ul>
 		<form id="bottom" on:submit|preventDefault={send_message}>
