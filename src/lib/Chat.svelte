@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { socket } from '$lib/socket';
+	import { is_connected, socket } from '$lib/socket';
 	import { derived, writable, type Writable } from 'svelte/store';
 	import type { Socket, Channel } from 'phoenix';
 	import { afterUpdate } from 'svelte';
 	import { browser } from '$app/environment';
+	import Spinner from './Spinner.svelte';
 
 	type Message = { id: string; author: string; content: string };
 
@@ -25,7 +26,7 @@
 
 			global_chat
 				.join()
-				.receive('ok', ({ messages }) => console.log("received: " + messages))
+				.receive('ok', ({ messages }) => console.log('received: ' + messages))
 				.receive('timeout', () => console.log('timeout'))
 				.receive('error', ({ reason }) => console.log('failed to connect %s', reason));
 		},
@@ -54,16 +55,22 @@
 </script>
 
 <div>
-	<h4>Global Chat</h4>
-	<ul bind:this={message_list}>
-		{#each $message_store as message (message.id)}
-			<li>{message.author}: {message.content}</li>
-		{/each}
-	</ul>
-	<form on:submit|preventDefault={send_message}>
-		<input bind:this={message_input} type="text" placeholder="placeholder" />
-		<button type="submit">Send</button>
-	</form>
+	<h4 id="top">Global Chat</h4>
+	{#if !$is_connected}
+		<div id="center">
+			<Spinner />
+		</div>
+	{:else}
+		<ul id="center" bind:this={message_list}>
+			{#each $message_store as message (message.id)}
+				<li>{message.author}: {message.content}</li>
+			{/each}
+		</ul>
+		<form id="bottom" on:submit|preventDefault={send_message}>
+			<input bind:this={message_input} type="text" placeholder="placeholder" />
+			<button type="submit">Send</button>
+		</form>
+	{/if}
 </div>
 
 <style>
@@ -78,14 +85,14 @@
 		box-sizing: border-box;
 	}
 
-	h4 {
+	#top {
 		flex-grow: 0;
 		text-align: center;
 		margin: var(--size-xs);
 		justify-self: flex-start;
 	}
 
-	ul {
+	#center {
 		padding: 0;
 		margin: 0;
 		list-style-type: none;
@@ -94,7 +101,7 @@
 		overflow-y: scroll;
 	}
 
-	form {
+	#bottom {
 		flex-grow: 0;
 		justify-self: flex-end;
 		display: flex;

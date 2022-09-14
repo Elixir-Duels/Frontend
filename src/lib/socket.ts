@@ -12,8 +12,10 @@ export const socket: Readable<Socket | undefined> = derived(token, (token) => {
 
 export const is_connected = writable(false);
 
-const update_connected = (socket: Socket | undefined) =>
-	is_connected.set((socket && socket.connectionState() == 'open') ?? false);
+const update_connected = (socket: Socket | undefined) => {
+	const state = socket?.connectionState();
+	is_connected.set(state == 'open' ?? false);
+};
 
 socket.subscribe((socket: Socket | undefined) => socket?.onOpen(() => update_connected(socket)));
 socket.subscribe((socket: Socket | undefined) => socket?.onClose(() => update_connected(socket)));

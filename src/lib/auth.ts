@@ -34,7 +34,17 @@ token.subscribe((token) => {
 		method: 'GET'
 	});
 	fetch(req)
-		.then((r) => r.json())
+		.catch(() => {
+			/* downstream will handle this automatically */
+			return undefined;
+		})
+		.then(async (r) => {
+			if (r?.ok) {
+				return await r.json();
+			} else {
+				return undefined;
+			}
+		})
 		.then((info: any) => {
 			if (info && info.username && info.id && info.token) {
 				// yey
@@ -110,6 +120,7 @@ export const login = (username: string, password: string) => {
 		.then((response) => {
 			if (!response.ok) {
 				console.error('failed to signin');
+				location.reload();
 				return;
 			}
 			return response.json();

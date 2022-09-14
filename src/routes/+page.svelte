@@ -2,6 +2,8 @@
 	import { login, signup, logged_in } from '$lib/auth';
 	import Button from '$lib/Button.svelte';
 	import Chat from '$lib/Chat.svelte';
+	import { is_connected } from '$lib/socket';
+	import Spinner from '$lib/Spinner.svelte';
 
 	let rating = 1500;
 
@@ -25,20 +27,26 @@
 			</header>
 			<main>
 				{#if $logged_in}
-					<div class="group">
-						<Button on:click|once={start_matchmaking}>
-							<h4>Play</h4>
-							<h5>Current Rating: {rating}</h5>
-						</Button>
-					</div>
-					<div class="group">
-						<Button on:click={open_settings}>
-							<h4>Settings</h4>
-						</Button>
-						<Button on:click={open_about}>
-							<h4>About</h4>
-						</Button>
-					</div>
+					{#if !$is_connected}
+						<div class="group">
+							<Spinner />
+						</div>
+					{:else}
+						<div class="group">
+							<Button on:click|once={start_matchmaking}>
+								<h4>Play</h4>
+								<h5>Current Rating: {rating}</h5>
+							</Button>
+						</div>
+						<div class="group">
+							<Button on:click={open_settings}>
+								<h4>Settings</h4>
+							</Button>
+							<Button on:click={open_about}>
+								<h4>About</h4>
+							</Button>
+						</div>
+					{/if}
 				{:else}
 					<div class="group">
 						<input bind:value={username} type="text" placeholder="username" />
