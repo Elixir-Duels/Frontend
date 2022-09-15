@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { socket } from '$lib/socket';
 	import Spinner from '$lib/Spinner.svelte';
 	import { onDestroy } from 'svelte';
 	import { derived, writable } from 'svelte/store';
@@ -47,6 +49,23 @@
 	});
 
 	onDestroy(() => controller.abort());
+
+	const lobby_channel = derived(socket, (socket) => {
+		if (!socket) return;
+		const channel = socket.channel('matchmaking:lobby');
+		channel.join();
+		return channel;
+	});
+
+	onDestroy(() => $socket?.channel('matchmaking:lobby').leave());
+
+	lobby_channel.subscribe((lobby_channel) => {
+		if (!lobby_channel) return;
+		const ref = lobby_channel.on('game_found', ({ game_id }) => {
+			goto('/game/' + game_id);
+		});
+		onDestroy(() => lobby_channel.off('game_found', ref));
+	});
 
 	let queue_count = 10;
 </script>
