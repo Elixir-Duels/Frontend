@@ -16,7 +16,11 @@
 		global_chat ? new Presence(global_chat) : undefined
 	);
 	let global_presence_list: Writable<
-		Map<string, { meta: never /* todo: type properly */; user: { username: string } }> | undefined
+		| Map<
+				string,
+				{ meta: never /* todo: type properly */; user: { username: string; skill_rating: number } }
+		  >
+		| undefined
 	> = writable(undefined);
 	const update_presence_list = (global_presence: Presence) => {
 		let new_list = new Map();
@@ -63,9 +67,14 @@
 		([message_store, global_presence_list]) =>
 			message_store.map((message) => {
 				const presence_info = global_presence_list?.get(message.author);
+				let user_representation = '???';
+				if (presence_info) {
+					user_representation =
+						presence_info.user.username + ' (' + presence_info.user.skill_rating + ')';
+				}
 				return {
 					id: message.id,
-					formatted: (presence_info?.user.username ?? '???') + ': ' + message.content
+					formatted: user_representation + ': ' + message.content
 				};
 			})
 	);
