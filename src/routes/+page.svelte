@@ -1,14 +1,14 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { login, signup, logged_in } from '$lib/auth';
 	import Button from '$lib/Button.svelte';
-	import Chat from '$lib/Chat.svelte';
 	import { is_connected } from '$lib/socket';
 	import Spinner from '$lib/Spinner.svelte';
 
 	let rating = 1500;
 
 	function start_matchmaking() {
-		console.log('test');
+		goto('/matchmaking');
 	}
 
 	function open_settings() {}
@@ -63,10 +63,6 @@
 		</div>
 	</div>
 </div>
-
-<aside>
-	<Chat />
-</aside>
 
 <style>
 	#center-lr {
@@ -131,28 +127,5 @@
 		outline: var(--outline-primary);
 		box-shadow: var(--shadow-primary-xs);
 		font-size: xx-large;
-	}
-
-	aside {
-		visibility: hidden;
-
-		position: absolute;
-		right: var(--size-m);
-		bottom: var(--size-m);
-		overflow: hidden;
-
-		width: 25vw;
-		height: 35vh;
-		background-color: var(--color-secondary);
-		color: var(--color-primary);
-		outline: var(--outline-primary);
-		box-shadow: var(--shadow-primary-xs);
-		display: block;
-	}
-
-	@media only screen and (min-width: 500px) and (min-height: 300px) {
-		aside {
-			visibility: visible;
-		}
 	}
 </style>

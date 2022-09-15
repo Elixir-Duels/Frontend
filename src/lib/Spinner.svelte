@@ -8,7 +8,7 @@
 		aspect-ratio: 1/1;
 		display: inline-block;
 		position: relative;
-		max-width: 100%;
+		width: 100%;
 		max-height: 100%;
 		min-height: 80px;
 		min-width: 80px;
